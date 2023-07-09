@@ -40,12 +40,62 @@ def sitemap():
 def handle_hello():
 
     response_body = {
-        "msg": "Hello, this is your GET /user response "
+        "msg": "Hello, Sernaggio has landed "
     }
 
     return jsonify(response_body), 200
+
+@app.route('/people', methods=['GET'])
+def get_people():
+    response = request.get('https://swampi.dev/api/people/1')
+    print(response)
+    return response.json(), 200
+
+@app.route('/planets', methods=['GET'])
+def get_planets():
+    response = request.get('https://swampi.dev/api/planets/')
+    print(response)
+    return response.json(), 200
+
+@app.route('/people/<int:people_id>', methods=['GET'])
+def get_people():
+    response = request.get('https://swapi.dev/api/people')
+    print(response)
+    return response.json(), 200
+
+@app.route('/planets/<int:planets_id>', methods=['GET'])
+def get_planets():
+    response = request.get('https://swapi.dev/api/planets')
+    print(response)
+    return response.json(), 200
+
+@app.route('/users', methods=['GET'])
+def get_users():
+    response = request.get('https://swapi.dev/api/users')
+    print(response)
+    return response.json(), 200
+
+@app.route('/users/favorites', methods=['GET'])
+def get_planets():
+    response = request.get('https://swapi.dev/api/favorites')
+    print(response)
+    return response.json(), 200
+
+@app.route('/planets/<int:planets_id>', methods=['GET'])
+def get_planets():
+    response = request.get('https://swapi.dev/api/planets')
+    print(response)
+    return response.json(), 200
+
+@app.route('/planets/<int:planets_id>', methods=['GET'])
+def get_planets():
+    response = request.get('https://swapi.dev/api/planets')
+    print(response)
+    return response.json(), 200
+
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=False)
+
