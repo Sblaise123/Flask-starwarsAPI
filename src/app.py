@@ -93,6 +93,48 @@ def get_planets():
     print(response)
     return response.json(), 200
 
+@app.route('/user/favorites/<int:user_id>', methods=['POST'])
+def add_favorite_planet(user_id):
+    user = User.query.get(user_id)  
+    if user is None:
+        return jsonify({'error': 'User not found'}), 404
+    planet_id = request.get_json()["planet_id"]
+    planet = Planet.query.get(planet_id)
+    if planet is None:
+        return jsonify({'error': 'Planet not found'}), 404
+
+    
+    favorite = Favorite(user=user, planet=planet)
+    db.session.add(favorite)
+    db.session.commit()
+
+    
+    return jsonify({
+        'user_id': user.id,
+        'planet_id': planet.id
+    }), 201
+
+@app.route('/user/favorites/<int:user_id>/people/<int:people_id>', methods=['DELETE'])
+def delete_favorite_people(user_id, people_id):
+    favorite = Favorite.query.filter_by(user_id=user_id, people_id=people_id).first()
+    if favorite is None:
+        return jsonify({'error': 'Favorite person not found for the user'}), 404
+
+    db.session.delete(favorite)
+    db.session.commit()
+
+    return jsonify({'message': 'Favorite person deleted successfully'})
+
+@app.route('/user/favorites/<int:user_id>/planet/<int:planet_id>', methods=['DELETE'])
+def delete_favorite_planet(user_id, planet_id):
+    favorite = Favorite.query.filter_by(user_id=user_id, planet_id=planet_id).first()
+    if favorite is None:
+        return jsonify({'error': 'Favorite planet not found for the user'}), 404
+
+    db.session.delete(favorite)
+    db.session.commit()
+
+    return jsonify({'message': 'Favorite planet deleted successfully'})
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
